@@ -8,8 +8,6 @@ from django.urls import reverse
 class SubmissionsTest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.all_submissions_url = reverse('all_submissions')
-        self.problem_submission_url = reverse('problem_submission', kwargs={'pk': 1})
         self.user = User.objects.create_user(
             email = "test@test.com",
             username= "testuser",
@@ -21,10 +19,13 @@ class SubmissionsTest(TestCase):
             difficulty = "HARD"
         )
         self.data = {
-            "problem":1,
+            "problem":self.problem.id,
             "language":"python",
             "code":"print('Hello World')"
         }  
+        self.all_submissions_url = reverse('all_submissions')
+        self.problem_submission_url = reverse('problem_submission', kwargs={'pk': self.problem.id})
+        
 
     def test_authenticated_user_can_create_submissions(self):
         self.client.force_authenticate(user = self.user)
@@ -38,6 +39,7 @@ class SubmissionsTest(TestCase):
 
     def test_authenticated_user_can_view_submissions(self):
         self.client.force_authenticate(user = self.user)
+        self.client.post(self.problem_submission_url,self.data)    
         response = self.client.get(self.all_submissions_url)
         self.assertEqual(response.status_code, 200)    
 
