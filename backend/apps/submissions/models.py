@@ -15,6 +15,7 @@ class Submissions(models.Model):
         WRONG_ANSWER = "WRONG_ANSWER", "Wrong Answer"
         TLE= "TLE", "Time Limit Exceeded"
         RE = "RE", "Runtime Error"
+        CE = "CE", "Compilation Error"
         PENDING = "PENDING", "Pending"
 
     code = models.TextField(max_length=500)
