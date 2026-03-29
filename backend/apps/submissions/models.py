@@ -4,8 +4,8 @@ from apps.problems.models import Problems
 
 # Create your models here.
 class Submissions(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    problem = models.ForeignKey(Problems, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
+    problem = models.ForeignKey(Problems, on_delete=models.CASCADE, db_index=True)
     class Language(models.TextChoices):
         C = "c", "C"
         CPP = "cpp","C++"

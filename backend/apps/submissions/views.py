@@ -24,5 +24,5 @@ class AllSubmissionsView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        queryset = Submissions.objects.filter(user = self.request.user)
+        queryset = Submissions.objects.filter(user = self.request.user).select_related('problem')
         return queryset

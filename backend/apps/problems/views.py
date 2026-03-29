@@ -3,6 +3,7 @@ from .serializers import ProblemListSerializer, ProblemDetailSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework import generics
 from .models import Problems
+from django.core.cache import cache
 # Create your views here.
 
 class ProblemListCreateAPIView(generics.ListCreateAPIView):
@@ -14,13 +15,27 @@ class ProblemListCreateAPIView(generics.ListCreateAPIView):
         return ProblemListSerializer
 
     def get_queryset(self):
+        difficulty = self.request.query_params.get('difficulty', 'all')
+        cache_key = f"problems_list_{difficulty}"
+
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
+        
         queryset = Problems.objects.all()
+        if difficulty!='all':
+            queryset = queryset.filter(difficulty = difficulty)
+        cache.set(cache_key, queryset, timeout=300)
         return queryset
     
     def get_permissions(self):
         if self.request.method =="POST":
             return [IsAdminUser()]
         return [IsAuthenticated()]
+    
+    def perform_create(self, serializer):
+        serializer.save()
+        cache.delete_pattern('problems_list_*')
     
 class ProblemDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProblemDetailSerializer
