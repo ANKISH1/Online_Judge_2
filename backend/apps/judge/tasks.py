@@ -7,7 +7,10 @@ from apps.problems.models import TestCase
 
 def get_command(submission):
     if submission.language =='python':
-        return ['python', '-c',submission.code], None, None
+        with tempfile.NamedTemporaryFile(suffix ='.py', mode = 'w', delete=False) as f:
+            f.write(submission.code)
+            source_file = f.name
+        return ['python', source_file], source_file, None
     
     elif submission.language == 'cpp':
         with tempfile.NamedTemporaryFile(suffix='.cpp', mode = 'w', delete=False) as f:
@@ -58,6 +61,8 @@ def execute_submission(submission_id):
                 text=True,                          # in string format
                 timeout=5                           # 5 seconds time limit
             )
+            print(f"Output: '{result.stdout.strip()}'")     
+            print(f"Expected: '{test_case.expected_output.strip()}'")
             if result.returncode!=0:
                 submission.verdict = "RE"
                 submission.save()
