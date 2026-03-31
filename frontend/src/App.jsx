@@ -5,6 +5,7 @@ import Problem_Detail from "./pages/problem_detail";
 import Submissions from "./pages/submissions";
 import Register from "./pages/register";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from "./components/Navbar";
 
 export default function App(){
   return(
