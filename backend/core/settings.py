@@ -173,4 +173,5 @@ CELERY_RESULT_BACKEND = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0')
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173", #React Dev Server. Only requests from this origin will be allowed here
+    "http://13.233.96.29",
 ]
