@@ -20,6 +20,15 @@ class SubmissionListCreateSerializer(serializers.ModelSerializer):
 
 class AllSubmissionsSerializer(serializers.ModelSerializer):
     problem_title = serializers.CharField(source = 'problem.title', read_only = True)
+    language = serializers.SerializerMethodField()
+    verdict = serializers.SerializerMethodField()
+    
+    def get_language(self, obj):
+        return obj.get_language_display()
+    
+    def get_verdict(self,obj):
+        return obj.get_verdict_display()
+    
     class Meta:
         model = Submissions
         fields = ['id', 'user', 'problem_title','language', 'verdict','submitted'] 

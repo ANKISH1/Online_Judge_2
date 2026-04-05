@@ -20,5 +20,5 @@ class Submissions(models.Model):
 
     code = models.TextField(max_length=500)
     language = models.CharField(choices=Language.choices, max_length=10, )
-    verdict = models.CharField(choices=Verdict, max_length=20, default="PENDING")
+    verdict = models.CharField(choices=Verdict.choices, max_length=20, default="PENDING")
     submitted = models.DateTimeField(auto_now_add=True)        

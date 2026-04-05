@@ -8,7 +8,7 @@ class Problems(models.Model):
         HARD = "HARD", "Hard"
     title = models.CharField(max_length=200)
     description = models.TextField(max_length=500)
-    difficulty = models.CharField(choices=Difficulty, max_length=10, db_index=True)
+    difficulty = models.CharField(choices=Difficulty.choices, max_length=10, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
