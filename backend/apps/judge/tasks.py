@@ -31,6 +31,8 @@ def get_command(submission):
         if compile_result.returncode!=0:
             return None, None, "CE"
         return [compiled_file], source_file, compiled_file 
+    
+
 
 @shared_task
 def execute_submission(submission_id):

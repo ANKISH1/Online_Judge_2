@@ -8,6 +8,8 @@ export default function Problem_Detail(){
     const [problem,setProblem] = useState(null)
     const [language,setLanguage] = useState('python')
     const[code, setCode] =useState('')
+    const[customInput,setCustomInput] = useState('')
+    const[output, setOutput] = useState('')
 
 
     useEffect(() =>{
@@ -30,6 +32,15 @@ export default function Problem_Detail(){
             }, 3000)
         })
         }
+    const handlerun = () =>{
+        api.post('/judge/run/',{
+            code: code,
+            language:language,
+            input: customInput
+        })
+        .then(res => setOutput(res.data.output))
+        .catch(err =>console.log(err))
+    }    
 
     if (!problem) return <div className="text-white">Loading...</div>
     return(
@@ -47,13 +58,32 @@ export default function Problem_Detail(){
                     <option value="c">C</option>
                 </select>
             <Editor
-                height = '400px'
+                height = '300px'
                 language = {language}
                 theme = 'vs-dark'
                 defaultValue='Write your code here'
                 onChange={(value) => setCode(value)}
                 />
                 <button onClick={handelsubmit} className="mt-4 bg-indigo-600 text-white px-6 py-2 cursor pointer hover:bg-indigo-500 rounded-lg">Submit</button>
+
+            <textarea
+                value = {customInput}
+                onChange={(e) => setCustomInput(e.target.value)}
+                placeholder="Write your custom input here..."
+                className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 mt-4"
+                rows={4}
+                />
+                <button
+                    onClick={handlerun}
+                    className="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-500"
+                    >Run</button>
+
+                {output && (
+                    <div className="mt-4 bg-gray-800 text-white p-4 rounded-lg">
+                    <pre>{output}</pre>
+                    </div>
+                )}    
+
         </div>
     )
 }
