@@ -19,4 +19,7 @@ jobs:
           script: |
             cd ~/RadiantOJ
             git pull origin dev
+            cd frontend
+            npm run build
+            cd ..
             sudo docker-compose up --build -d
