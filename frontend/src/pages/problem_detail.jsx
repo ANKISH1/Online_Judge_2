@@ -81,7 +81,7 @@ export default function Problem_Detail(){
                 />
                 <button onClick={handelsubmit} className="mt-4 bg-indigo-600 text-white px-6 py-2 cursor pointer hover:bg-indigo-500 rounded-lg">Submit</button>
 
-                {isSubmitting && <p>Evaluating...</p>}
+                {isSubmitting && <p className="text-white">Evaluating...</p>}
                 {verdict&&(
                     <p style={{color:verdict==='ACCEPTED'?'green':'red'}}>{verdict}</p>
                 )}
