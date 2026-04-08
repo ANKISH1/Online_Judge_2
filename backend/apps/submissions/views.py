@@ -26,3 +26,9 @@ class AllSubmissionsView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Submissions.objects.filter(user = self.request.user).select_related('problem')
         return queryset
+    
+
+class SubmissionDetailView(generics.RetrieveAPIView):
+    serializer_class  = SubmissionListCreateSerializer
+    def get_queryset(self):
+        return Submissions.objects.filter(user = self.request.user)    

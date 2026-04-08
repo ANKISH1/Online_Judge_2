@@ -12,7 +12,11 @@ class Problems(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{Problems.title}"
+        return self.title
+    
+    class Meta:
+        verbose_name = "Problem"
+        verbose_name_plural = "Problems"
 
 class TestCase(models.Model):
     problem = models.ForeignKey(Problems, on_delete=models.CASCADE, related_name = 'test_cases')

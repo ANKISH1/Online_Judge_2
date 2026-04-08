@@ -56,6 +56,9 @@ export default function Register(){
                     className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3"
                     />
                     <button onClick={handelsubmit} className="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg">Register</button>
+                    <div className="w-full bg-gray-800 text-white cursor-pointer hover:text-blue-800" 
+                        onClick={() => navigate('/login')}> Existing User?
+                    </div>
                 </div>
             </div>
         </div>
