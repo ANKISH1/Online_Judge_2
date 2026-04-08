@@ -10,6 +10,10 @@ export default function Problem_Detail(){
     const[code, setCode] =useState('')
     const[customInput,setCustomInput] = useState('')
     const[output, setOutput] = useState('')
+    const[verdict,setVerdict] = useState(null)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+
+
 
 
     useEffect(() =>{
@@ -19,17 +23,28 @@ export default function Problem_Detail(){
     }, [id])
 
     const handelsubmit = () =>{
+        setVerdict(null)
+        setIsSubmitting(true)
+
+
         api.post(`/submissions/problem/${id}/`,{
             code:code,
             language:language,
             problem: id
         })
         .then(res =>{
+            const submissionId = res.data.id
+
             console.log(res.data)
-            setTimeout(() =>{
-                api.get(`/submissions/problem/${id}/`)
-                .then(r => console.log(r.data.results[id]))
-            }, 3000)
+            const interval = setInterval(() =>
+            api.get(`/submissions/${submissionId}/`)
+            .then(r=>{
+                if(r.data.verdict!=='PENDING'){
+                    setVerdict(r.data.verdict)
+                    setIsSubmitting(false)
+                    clearInterval(interval)
+                }
+            }))
         })
         }
     const handlerun = () =>{
@@ -65,6 +80,11 @@ export default function Problem_Detail(){
                 onChange={(value) => setCode(value)}
                 />
                 <button onClick={handelsubmit} className="mt-4 bg-indigo-600 text-white px-6 py-2 cursor pointer hover:bg-indigo-500 rounded-lg">Submit</button>
+
+                {isSubmitting && <p>Evaluating...</p>}
+                {verdict&&(
+                    <p style={{color:verdict==='ACCEPTED'?'green':'red'}}>{verdict}</p>
+                )}
 
             <textarea
                 value = {customInput}

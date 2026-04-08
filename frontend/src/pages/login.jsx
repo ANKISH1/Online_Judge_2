@@ -16,6 +16,8 @@ export default function Login(){
     }
     const handelsubmit = async (e) => {
         e.preventDefault()
+        localStorage.removeItem('access')
+        localStorage.removeItem('refresh')
         try{
             const res = await api.post('auth/login/', formData)
             console.log(res.data)
@@ -52,7 +54,11 @@ export default function Login(){
                         />    
                     <button onClick={handelsubmit} className="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg">
                         Login
-                    </button>    
+                    </button> 
+                    <div className="w-full bg-gray-800 text-white cursor-pointer hover:text-blue-800" 
+                        onClick={() => navigate('/register')}> New User?
+                        
+                        </div>   
                 </div>
 
             </div>
