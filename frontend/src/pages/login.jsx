@@ -8,6 +8,8 @@ export default function Login(){
         'password':'',
     }
     )
+    const[error, setError] = useState('')
+
     const navigate = useNavigate();
 
 
@@ -27,13 +29,18 @@ export default function Login(){
             navigate('/problems') //redirect on action
         }catch(err){
             console.log(err.response.data)
+            setError('Invalid Email or Password')
         }
         
     }
     return(
         <div className="min-h-screen bg-gray-950 flex items-center justify-center">
             <div className="bg-gray-800 p-8 rounded-2xl w-full max-w-md">
+                
                 <h1 className="text-3xl font-bold text-white mb-8">Login</h1>
+                {error && (
+                    <div className="text-red-500 mb-4">{error}</div>
+                )}
                 
                 <div className="space-y-5">
                     <input
@@ -52,7 +59,7 @@ export default function Login(){
                         onChange={handlechange}
                         className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3"
                         />    
-                    <button onClick={handelsubmit} className="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg">
+                <button onClick={handelsubmit} className="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-semibold py-3 rounded-lg transition duration-150">
                         Login
                     </button> 
                     <div className="w-full bg-gray-800 text-white cursor-pointer hover:text-blue-800" 

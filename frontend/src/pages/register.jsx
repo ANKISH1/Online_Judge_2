@@ -9,6 +9,8 @@ export default function Register(){
         'password':''
 
     })
+    const [error, setError] = useState('')
+
     const navigate = useNavigate()
 
     const handlechange = (e) =>{
@@ -17,12 +19,13 @@ export default function Register(){
     const handelsubmit =async (e)=>{
         e.preventDefault()
         try{
-            api.post('/auth/register/', formData)
+            await api.post('/auth/register/', formData)
             .then(res => console.log(res.data))
             navigate('/login')
         }
         catch(err){
             console.log(err.response.data)
+            setError("Please fill all fields")
         }
     }
     
@@ -30,6 +33,9 @@ export default function Register(){
         <div className="min-h-screen bg-gray-950 flex items-center justify-center">
             <div className="bg-gray-800 p-8 rounded-2xl w-full max-w-md">
                 <h1 className="text-3xl font-bold text-white mb-8">Register</h1>
+                {error && (
+                    <div className="text-red-500 mb-4">{error}</div>
+                )}
                 <div className="space-y-5">
                     <input
                     name = "username"
@@ -55,7 +61,7 @@ export default function Register(){
                     onChange={handlechange}
                     className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3"
                     />
-                    <button onClick={handelsubmit} className="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg">Register</button>
+                    <button onClick={handelsubmit} className="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-semibold py-3 rounded-lg transition duration-150">Register</button>
                     <div className="w-full bg-gray-800 text-white cursor-pointer hover:text-blue-800" 
                         onClick={() => navigate('/login')}> Existing User?
                     </div>
