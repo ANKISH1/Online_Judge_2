@@ -60,9 +60,14 @@ export default function Problem_Detail(){
     if (!problem) return <div className="text-white">Loading...</div>
     return(
          <div className="min-h-screen bg-gray-950 p-8">
+
+
+            {/* Problem Info */}
             <h1 className="text-3xl font-bold text-white mb-4">{problem.title}</h1>
             <span className="text-gray-400">{problem.difficulty}</span>
             <p className="text-gray-300 mt-6">{problem.description}</p>
+
+            {/* Language Dropdown */}
             <select
                 value = {language}
                 onChange={(e) => setLanguage(e.target.value)}
@@ -72,6 +77,8 @@ export default function Problem_Detail(){
                     <option value="cpp">C++</option>
                     <option value="c">C</option>
                 </select>
+
+            {/*Editor*/}    
             <Editor
                 height = '300px'
                 language = {language}
@@ -79,30 +86,45 @@ export default function Problem_Detail(){
                 defaultValue='Write your code here'
                 onChange={(value) => setCode(value)}
                 />
-                <button onClick={handelsubmit} className="mt-4 bg-indigo-600 text-white px-6 py-2 cursor pointer hover:bg-indigo-500 rounded-lg">Submit</button>
 
-                {isSubmitting && <p className="text-white">Evaluating...</p>}
-                {verdict&&(
-                    <p style={{color:verdict==='ACCEPTED'?'green':'red'}}>{verdict}</p>
-                )}
-
+            {/*Input*/}    
             <textarea
                 value = {customInput}
                 onChange={(e) => setCustomInput(e.target.value)}
                 placeholder="Write your custom input here..."
                 className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg px-4 py-3 mt-4"
-                rows={4}
+                rows={3}
                 />
-                <button
-                    onClick={handlerun}
-                    className="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-500"
-                    >Run</button>
 
-                {output && (
+            {/*Buttons*/} 
+            <div className="flex gap-4 mt-4"> 
+            <button
+                onClick={handlerun}
+                className="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-500">
+                    Run
+            </button>
+
+
+            <button onClick={handelsubmit} className="mt-4 bg-indigo-600 text-white px-6 py-2 cursor pointer hover:bg-indigo-500 rounded-lg">
+                    Submit
+            </button>
+
+            </div>
+
+            {/*Output*/}
+
+            {output && (
                     <div className="mt-4 bg-gray-800 text-white p-4 rounded-lg">
                     <pre>{output}</pre>
                     </div>
-                )}    
+            )}
+
+            {/*Verdict*/}
+
+            {isSubmitting && <p className="text-white">Evaluating...</p>}
+            {verdict&&(
+                <p style={{color:verdict==='ACCEPTED'?'green':'red'}}>{verdict}</p>
+            )}
 
         </div>
     )
