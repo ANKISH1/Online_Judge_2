@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.views import APIView
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import RegisterSerializer, LoginSerializer, ProfileSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from .models import Profile
 # Create your views here.
 class RegisterView(generics.CreateAPIView):
     permission_classes = [AllowAny]
@@ -31,3 +32,11 @@ class LogoutView(APIView):
             return Response(status = status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status= status.HTTP_400_BAD_REQUEST)
+        
+
+class ProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self): #since this is single object view, so we override get_object instead of get_queryset
+        return self.request.user.profile # since onetoone field, we can access directly

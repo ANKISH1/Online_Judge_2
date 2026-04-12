@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Profile
 from django.contrib.auth import authenticate
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -28,3 +28,14 @@ class LoginSerializer(serializers.Serializer):
         if user:
             return user
         raise serializers.ValidationError("Invalid email or password")
+    
+class ProfileSerializer(serializers.ModelSerializer):
+    bio = serializers.CharField(source = 'user.bio', read_only = True)
+    class Meta:
+        model = Profile
+        fields = ['user','bio','rating', 'problems_solved', 'avatar']
+        extra_kwargs={
+            'user':{'read_only': True},
+            'rating':{'read_only': True},
+            'problems_solved':{'read_only': True},
+        }

@@ -10,4 +10,6 @@ COPY backend/requirements.txt .
 RUN pip install -r requirements.txt
 COPY backend/ .
 
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+CMD ["./entrypoint.sh"]
