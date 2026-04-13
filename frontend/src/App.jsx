@@ -18,7 +18,10 @@ export default function App(){
         <ProtectedRoute>
         <Problems/>
         </ProtectedRoute>}/>
-      <Route path = "/problems/:id" element = {<Problem_Detail/>}/>
+      <Route path = "/problems/:id" element = {
+        <ProtectedRoute>
+        <Problem_Detail/>
+        </ProtectedRoute>}/>
       <Route path = "/submissions" element = {
         <ProtectedRoute>
         <Submissions/>
