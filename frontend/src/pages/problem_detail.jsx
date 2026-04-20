@@ -12,6 +12,8 @@ export default function Problem_Detail(){
     const[output, setOutput] = useState('')
     const[verdict,setVerdict] = useState(null)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [hint, setHint] = useState('')
+    const [isHinting, setisHinting]  = useState(false)
 
 
 
@@ -55,7 +57,24 @@ export default function Problem_Detail(){
         })
         .then(res => setOutput(res.data.output))
         .catch(err =>console.log(err))
-    }    
+    }
+    
+    const handlehint = () => {
+        setisHinting(true)
+        api.post(`/problems/${id}/hint/`,{
+            user_code: code
+        })
+        .then(res => {
+            setHint(res.data.hint)
+            setisHinting(false)
+        })
+        .catch(err => {
+            console.log(err)
+            setisHinting(false)
+
+    })
+
+    }
 
     if (!problem) return <div className="text-white">Loading...</div>
     return(
@@ -109,6 +128,10 @@ export default function Problem_Detail(){
                     Submit
             </button>
 
+            <button onClick={handlehint} className="mt-4 bg-orange-600 text-white px-6 py-2 cursor pointer hover:bg-orange-500 rounded-lg">
+                    Hint
+            </button>
+
             </div>
 
             {/*Output*/}
@@ -124,6 +147,14 @@ export default function Problem_Detail(){
             {isSubmitting && <p className="text-white">Evaluating...</p>}
             {verdict&&(
                 <p style={{color:verdict==='ACCEPTED'?'green':'red'}}>{verdict}</p>
+            )}
+
+            {/*hint*/}
+            {isHinting && <p className="text-white">Getting hint...</p>}
+            {hint && (
+                <div className="mt-4 text-white p-4 rounded-lg">
+                <p className="whitespace-pre-wrap break-words">{hint}</p>
+                    </div>
             )}
 
         </div>

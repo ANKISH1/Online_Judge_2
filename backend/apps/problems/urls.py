@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import ProblemListCreateAPIView, ProblemDetailAPIView
+from .views import ProblemListCreateAPIView, ProblemDetailAPIView, HintView
 
 urlpatterns = [
     path('',ProblemListCreateAPIView.as_view(), name = 'problems'),
-    path('<int:pk>/', ProblemDetailAPIView.as_view(),name = 'problem_detail')
+    path('<int:pk>/', ProblemDetailAPIView.as_view(),name = 'problem_detail'),
+    path('<int:pk>/hint/', HintView.as_view(), name = "hint"),
 ]

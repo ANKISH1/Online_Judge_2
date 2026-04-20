@@ -4,6 +4,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework import generics
 from .models import Problems
 from django.core.cache import cache
+from rest_framework.views import APIView
+from .ai import hint
+from rest_framework.response import Response
 # Create your views here.
 
 class ProblemListCreateAPIView(generics.ListCreateAPIView):
@@ -49,3 +52,17 @@ class ProblemDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method == "DELETE":
             return [IsAdminUser()]
         return [IsAuthenticated()]    
+
+
+class HintView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, pk):
+        try:
+            problem = Problems.objects.get(id = pk)
+        except Problems.DoesNotExist:
+            return Response({"error": "Problem not found"}, status=404) 
+           
+        user_code = request.data.get('user_code', '')
+        hint_text = hint(problem.description, user_code)
+
+        return Response({"hint": hint_text})
