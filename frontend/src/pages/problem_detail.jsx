@@ -153,7 +153,7 @@ export default function Problem_Detail(){
             {isHinting && <p className="text-white">Getting hint...</p>}
             {hint && (
                 <div className="mt-4 text-white p-4 rounded-lg">
-                <p className="whitespace-pre-wrap break-words">{hint}</p>
+                <p className="whitespace-pre-wrap-break-words">{hint}</p>
                     </div>
             )}
 
